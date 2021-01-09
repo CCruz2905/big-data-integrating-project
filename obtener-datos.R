@@ -4,7 +4,8 @@ library(rjson)
 library(ggplot2)
 library(RCurl)
 
-leerApi <- function(url, opcion) {
+## LEER JSON##
+leerApi <- function(url) {
    flujoDatos <- 0
 
    # Obtener datos de la api
@@ -16,46 +17,30 @@ leerApi <- function(url, opcion) {
    flujoDatos<-fromJSON(flujoDatos)
 
    # Variables para graficar
-   ciudades <- 0
+   estados <- 0
    temperaturas <- 0
 
    # Recolección de datos
    j <- 1
 
-   # Se desea conocer unicamente el estado de las últimas 10 ciudades,
-   # ya que al ser 100 datos, la gráfica no queda legible
-   if (opcion == 1) {
-      for (i in 90:100) {
-         ciudades[j] = flujoDatos$results[[i]]$name
-         temperaturas[j] = flujoDatos$results[[i]]$tempc
-         j <- j + 1
-      }
-   }
-
-   # Segunda opción para utilizar toda la información para el wordcount y wordcloud
-   if (opcion == 2) {
-      for (i in 1:length(flujoDatos$results)) {
-         ciudades[j] = flujoDatos$results[[i]]$name
-         temperaturas[j] = flujoDatos$results[[i]]$tempc
+   for (i in 1:length(flujoDatos$results)) {
+      estados[j] = flujoDatos$results[[i]]$state
+      temperaturas[j] = flujoDatos$results[[i]]$tempc
       j <- j + 1
-      }
    }
 
    # Creación de la tabla
-   tablaDatos <- data.frame(cbind(ciudades, temperaturas))
+   tablaDatos <- data.frame(cbind(estados, temperaturas))
    return (tablaDatos)
 }
 
 # Creación de gráfica
 graficaCondicion <- function(tablaDatos) {
-   # Inside bars
-   ggplot(data = tablaDatos, aes(x = ciudades, y = temperaturas)) +
-   geom_bar(stat = "identity", fill = "steelblue")+
-   geom_text(aes(label = temperaturas), vjust = 1.6, color = "white", size = 3.5)+
+   ggplot(data, aes(x = temperaturas, fill = estados)) +
+   geom_bar(position = 'identity', alpha = 0.5) +
    theme_minimal()
 }
-
 # Enlace donde obtendremos la api
 url <- "https://api.datos.gob.mx/v1/condiciones-atmosfericas"
-data <- leerApi(url, 1)
+data <- leerApi(url)
 graficaCondicion(data)
