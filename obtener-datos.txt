@@ -1,8 +1,8 @@
 # Importar la tabla empleados a hadoop
-sqoop import --connect jdbc:mysql://localhost:3306/employees --username root --password Its2017. --m 1 --table employees --driver=com.mysql.cj.jdbc.Driver --target-dir /Databases/OUTPUT
+sqoop import --connect jdbc:mysql://localhost:3306/employees --username root --password Its2017. --m 1 --query "select employees.*, titles.title from employees join titles using(emp_no) where \$CONDITIONS" --where "hire_date > '1998/01/01'" --driver=com.mysql.cj.jdbc.Driver --target-dir /Databases/SQOOP-OUTPUT
 
 # Obtener los datos que se subieron
-hdfs dfs -get /Databases/OUTPUT/part-m-00000 /home/hdc
+hdfs dfs -get Databases/SQOOP-OUTPUT/part-m-00000 /home/hdc
 
 # Moverlo al proyecto integrador
-mv part-m-00000 Documents/ProyectoIntegrador/database
+sudo mv part-m-00000 Documents/ProyectoIntegrador/database

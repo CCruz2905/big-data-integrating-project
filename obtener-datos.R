@@ -7,7 +7,7 @@ library(readxl)
 library(dplyr)
 
 ################### LEER TEXTO ###################
-crearTabla <- function() {
+crearTexto <- function() {
    # Lectura del archivo
    mortalidad <- read_excel("mortalidad_05.xlsx")
    # De toda la información tomamos únicamente la de Saltillo
@@ -37,14 +37,14 @@ crearTabla <- function() {
 }
 
 # Funcion que crea el modelo de regresión lineal simple
-crearModelo <- function() {
-   modelo <- lm(n_death ~ years, data = tablaDatos2)
+crearModelo <- function(tablaDatos) {
+   modelo <- lm(n_death ~ years, data = tablaDatos)
 
    return (modelo)
 }
 
 # Función para generar la gráfica de regresión lineal simple
-graficarMortalidad <- function(data, predict) {                                                                              qplot(x = years, y = n_death, data = data,
+graficarTexto <- function(data, predict) {                                                                              qplot(x = years, y = n_death, data = data,
    main = "Muertes en Saltillo por año", ylab = "Muertes generales",
    xlab = "Años", geom = c("point"),
    method = "lm") + geom_line(aes(y = deathp), lwd = 1.2, color = 4) +
@@ -52,17 +52,17 @@ graficarMortalidad <- function(data, predict) {                                 
 }
 
 #Valores Predichos
-data_mortalidad <- crearTabla()
-modelo <- crearModelo()
+data_mortalidad <- crearTexto()
+modelo <- crearModelo(data_mortalidad)
 summary(modelo)
 # Predicción del modelo
 deathp <- predict(modelo)
-graficarMortalidad(data_mortalidad, deathp)
+graficarTexto(data_mortalidad, deathp)
 
 ################### FIN TEXTO ####################
 
 ################### LEER JSON ####################
-leerApi <- function(url) {
+leerJson <- function(url) {
    flujoDatos <- 0
 
    # Obtener datos de la api
@@ -92,15 +92,15 @@ leerApi <- function(url) {
 }
 
 # Creación de gráfica (Análisis discriminante)
-graficaCondicion <- function(tablaDatos) {
+graficaJson <- function(tablaDatos) {
    ggplot(data, aes(x = temperaturas, fill = estados)) +
    geom_bar(position = 'identity', alpha = 0.5) +
    theme_minimal()
 }
 # Enlace donde obtendremos la api
 url <- "https://api.datos.gob.mx/v1/condiciones-atmosfericas"
-data_temperaturas <- leerApi(url)
-graficaCondicion(data)
+data_temperaturas <- leerJson(url)
+graficaJson(data)
 
 ################### FIN JSON #####################
 
@@ -120,6 +120,7 @@ cambiarColNames <- function(varchivo) {
    names(varchivo)[4] <- "last_name"
    names(varchivo)[5] <- "gender"
    names(varchivo)[6] <- "hire_date"
+   names(varchivo)[7] <- "job_title"
 
    return (varchivo)
 }
