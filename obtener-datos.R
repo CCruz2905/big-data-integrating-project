@@ -1,11 +1,3 @@
-library(httr)
-library(jsonlite)
-library(rjson)
-library(ggplot2)
-library(RCurl)
-library(readxl)
-library(dplyr)
-
 cargarLibrerias <- function() {
    library(httr)
    library(jsonlite)
@@ -14,6 +6,11 @@ cargarLibrerias <- function() {
    library(RCurl)
    library(readxl)
    library(dplyr)
+   library(twitteR)
+   library(NLP)
+   library(tm)
+   library(RColorBrewer)
+   library(wordcloud)
 }
 
 ################### LEER TEXTO ###################
@@ -149,3 +146,61 @@ varchivo <- cambiarColNames(varchivo)
 graficarDatabase(varchivo)
 
 ################### FIN DB #######################
+
+################### TWITTER ######################
+accesoTwitter <- function() {
+   # Configuración del acceso desde R para Twitter
+   api_key <- "LPsLW0ffDNhLcLoZSQYu9BCqm"
+   api_secret_key <- "xK1AarZoRnF1koRzQgphZxCxoBtGNpBqXfrE3RaUMsjv6mJb5c"
+   access_token <- "1333965401340878848-9qFWneiS7MKgLs4JAfQYdEVe23QTki"
+   access_token_secret <- "UqnyeNPDZ626EUOAR4HCuaOWGvj6RmtPShW8PinTj4nWD"
+   setup_twitter_oauth(api_key, api_secret_key, access_token, access_token_secret)
+}
+
+crearCorpus <- function(palabra, cantidad) {
+   # Se define el criterio o criterios (por medio de vectores) que se desea buscar, así como la cantidad de tweets a bajar
+   tweets <- searchTwitter(palabra, n = cantidad)
+
+   # Se crea un dataframe con la información proveniente de los tweets
+   tweets.df <- twListToDF(tweets)
+
+   # Se crea el Vector Curpus para graficar en cloud
+   mycorpus <- VCorpus(VectorSource(tweets.df$text))
+
+   return (mycorpus)
+}
+
+# Gráfica
+graficarTwitter <- function(mycorpus) {
+   wordcloud(mycorpus, min.freq = 3, random.order = FALSE, colors = brewer.pal(8, "Dark2"))
+}
+
+# Abrir acceso a twitter
+accesoTwitter()
+mycorpus <- crearCorpus("#EGOLAND", 200)
+
+graficarTwitter(mycorpus)
+
+## Limpieza de Datos
+# Remueve palabras reservadas
+mycorpus <- tm_map(mycorpus, removeWords, stopwords())
+
+# Limpia el cuerpo de las puntuaciones, de forma manual
+removeNumPunct <- function(x) gsub("[^[:alpha:][:space:]]*", "", x)
+mycorpus <- tm_map(mycorpus, content_transformer(removeNumPunct))
+
+remove_url <- function(x) gsub("http[^[:space:]]*", "", x)
+mycorpus <- tm_map(mycorpus, content_transformer(remove_url))
+
+# Elimina puntuaciones standard
+mycorpus <- tm_map(mycorpus, removePunctuations)
+mycorpus <- tm_map(mycorpus, content_transformer(to_lower)
+mycorpus <- tm_map(mycorpus, stripWhitespace)
+mycorpus <- tm_map(mycorpus, stemDocument)
+
+myStopWords <- c("now", "this", "new", "news", "egoland", "luzugam", "youtub", "pero", "está", "habiai", "que", "est", "esta")
+mycorpus <- tm_map(mycorpus, removeWords, myStopWords)
+
+graficarTwitter(mycorpus)
+
+################### FIN TW #######################
