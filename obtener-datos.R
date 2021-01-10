@@ -6,6 +6,16 @@ library(RCurl)
 library(readxl)
 library(dplyr)
 
+cargarLibrerias <- function() {
+   library(httr)
+   library(jsonlite)
+   library(rjson)
+   library(ggplot2)
+   library(RCurl)
+   library(readxl)
+   library(dplyr)
+}
+
 ################### LEER TEXTO ###################
 crearTexto <- function() {
    # Lectura del archivo
@@ -48,7 +58,7 @@ graficarTexto <- function(data, predict) {                                      
    main = "Muertes en Saltillo por año", ylab = "Muertes generales",
    xlab = "Años", geom = c("point"),
    method = "lm") + geom_line(aes(y = deathp), lwd = 1.2, color = 4) +
-   theme_minimal()
+   theme_light()
 }
 
 #Valores Predichos
@@ -95,7 +105,7 @@ leerJson <- function(url) {
 graficaJson <- function(tablaDatos) {
    ggplot(data, aes(x = temperaturas, fill = estados)) +
    geom_bar(position = 'identity', alpha = 0.5) +
-   theme_minimal()
+   theme_light()
 }
 # Enlace donde obtendremos la api
 url <- "https://api.datos.gob.mx/v1/condiciones-atmosfericas"
@@ -127,7 +137,8 @@ cambiarColNames <- function(varchivo) {
 
 # Función para realizar gráfica
 graficarDatabase <- function(varchivo) {
-   ggplot(varchivo, aes(x = as.Date(hire_date), y = n, colour = gender)) +
+   ggplot(varchivo, aes(x = job_title, y = as.Date(hire_date), colour = gender)) +
+   geom_boxplot(outlier.shape = NA) +
    geom_jitter(size = 0.2) +
    theme_minimal()
 }
@@ -135,7 +146,6 @@ graficarDatabase <- function(varchivo) {
 # Inicio
 varchivo <- leerDatabase()
 varchivo <- cambiarColNames(varchivo)
-varchivo <- varchivo %>% select(gender, hire_date) %>% count(gender, hire_date)
 graficarDatabase(varchivo)
 
 ################### FIN DB #######################
