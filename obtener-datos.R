@@ -105,5 +105,36 @@ graficaCondicion(data)
 ################### FIN JSON #####################
 
 ################### DATABASE #####################
+# Función que permite leer lo extraído de la base de datos
+leerDatabase <- function() {
+   varchivo <- read.table(file="database", sep=",")
+
+   return (varchivo)
+}
+
+# Función para asignarle nombre a las columnas
+cambiarColNames <- function(varchivo) {
+   names(varchivo)[1] <- "no_emp"
+   names(varchivo)[2] <- "birth_date"
+   names(varchivo)[3] <- "first_name"
+   names(varchivo)[4] <- "last_name"
+   names(varchivo)[5] <- "gender"
+   names(varchivo)[6] <- "hire_date"
+
+   return (varchivo)
+}
+
+# Función para realizar gráfica
+graficarDatabase <- function(varchivo) {
+   ggplot(varchivo, aes(x = as.Date(hire_date), y = n, colour = gender)) +
+   geom_jitter(size = 0.2) +
+   theme_minimal()
+}
+
+# Inicio
+varchivo <- leerDatabase()
+varchivo <- cambiarColNames(varchivo)
+varchivo <- varchivo %>% select(gender, hire_date) %>% count(gender, hire_date)
+graficarDatabase(varchivo)
 
 ################### FIN DB #######################
