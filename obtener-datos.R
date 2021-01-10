@@ -103,3 +103,7 @@ data_temperaturas <- leerApi(url)
 graficaCondicion(data)
 
 ################### FIN JSON #####################
+
+################### DATABASE #####################
+
+################### FIN DB #######################

@@ -1,0 +1,8 @@
+# Importar la tabla empleados a hadoop
+sqoop import --connect jdbc:mysql://localhost:3306/employees --username root --password Its2017. --m 1 --table employees --driver=com.mysql.cj.jdbc.Driver --target-dir /Databases/OUTPUT
+
+# Obtener los datos que se subieron
+hdfs dfs -get /Databases/OUTPUT/part-m-00000 /home/hdc
+
+# Moverlo al proyecto integrador
+mv part-m-00000 Documents/ProyectoIntegrador/database
