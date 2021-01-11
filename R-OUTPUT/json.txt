@@ -1,0 +1,101 @@
+ estados temperaturas 
+ Aguascalientes 17 
+ Aguascalientes 15 
+ Aguascalientes 19 
+ Aguascalientes 17 
+ Aguascalientes 17 
+ Aguascalientes 17 
+ Aguascalientes 17 
+ Aguascalientes 17 
+ Aguascalientes 17 
+ Aguascalientes 16 
+ Aguascalientes 16 
+ Baja California 22 
+ Baja California 32 
+ Baja California 21 
+ Baja California 23 
+ Baja California Sur 26 
+ Baja California Sur 26 
+ Baja California Sur 28 
+ Baja California Sur 19 
+ Baja California Sur 27 
+ Chihuahua 26 
+ Chihuahua 27 
+ Chihuahua 22 
+ Chihuahua 19 
+ Chihuahua 24 
+ Chihuahua 24 
+ Chihuahua 23 
+ Chihuahua 20 
+ Chihuahua 19 
+ Chihuahua 26 
+ Chihuahua 23 
+ Chihuahua 23 
+ Chihuahua 24 
+ Chihuahua 19 
+ Chihuahua 23 
+ Chihuahua 28 
+ Chihuahua 18 
+ Chihuahua 24 
+ Chihuahua 15 
+ Chihuahua 24 
+ Chihuahua 23 
+ Chihuahua 22 
+ Chihuahua 26 
+ Chihuahua 19 
+ Chihuahua 16 
+ Chihuahua 28 
+ Chihuahua 23 
+ Chihuahua 23 
+ Chihuahua 24 
+ Chihuahua 19 
+ Chihuahua 23 
+ Chihuahua 16 
+ Chihuahua 23 
+ Chihuahua 17 
+ Chihuahua 22 
+ Chihuahua 18 
+ Chihuahua 22 
+ Chihuahua 20 
+ Chihuahua 24 
+ Chihuahua 27 
+ Chihuahua 24 
+ Chihuahua 22 
+ Chihuahua 25 
+ Chihuahua 14 
+ Chihuahua 22 
+ Chihuahua 26 
+ Chihuahua 23 
+ Chihuahua 26 
+ Chihuahua 21 
+ Chihuahua 22 
+ Chihuahua 21 
+ Chihuahua 27 
+ Chihuahua 23 
+ Chihuahua 23 
+ Chihuahua 27 
+ Chihuahua 24 
+ Chihuahua 23 
+ Chihuahua 26 
+ Chihuahua 21 
+ Chihuahua 21 
+ Chihuahua 26 
+ Chihuahua 27 
+ Chihuahua 22 
+ Chihuahua 28 
+ Chihuahua 19 
+ Chihuahua 21 
+ Campeche 27 
+ Campeche 27 
+ Campeche 28 
+ Campeche 26 
+ Campeche 28 
+ Campeche 27 
+ Campeche 27 
+ Campeche 28 
+ Campeche 27 
+ Campeche 27 
+ Coahuila 26 
+ Coahuila 26 
+ Coahuila 26 
+ Coahuila 21 

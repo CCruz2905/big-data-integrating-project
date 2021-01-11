@@ -1,0 +1,84 @@
+#############################################################################
+
+# Limpiar texto
+sed -e 's/[^0-9]/ /g;s/  */ /g' mortalidad.data > texto.txt
+
+# Subir archivo
+hdfs dfs -put texto.txt /Text/mortalidad.txt
+
+# Ejecutar wordcount
+hadoop jar functionWordCount wordcount /Text/mortalidad.txt /Text/OUTPUT
+
+# Mostrar directorio del resultado
+hdfs dfs -ls -lR /Text
+
+# Mostrar resultado
+hdfs dfs -cat /Text/OUTPUT/part-r-00000
+
+# Bajar archivo
+hdfs dfs -get /Text/OUTPUT/part-r-00000 /u02/ProyectoIntegrador/Hadoop/mortalidad.txt
+
+#############################################################################
+
+# Limpiar archivo JSON
+sed -e 's/[^a-zA-Z*0-9]/ /g;s/  */ /g' temperaturas.data > json.txt
+
+# Subir archivo
+hdfs dfs -put json.txt /JSON/temperaturas.txt
+
+# Ejecutar wordcount
+hadoop jar functionWordCount wordcount /JSON/temperaturas.txt /JSON/OUTPUT
+
+# Mostrar directorio del resultado
+hdfs dfs -ls -R /JSON
+
+# Mostrar resultado
+hdfs dfs -cat /JSON/OUTPUT/part-r-00000
+
+# Bajar archivo
+hdfs dfs -get /JSON/OUTPUT/part-r-00000 /u02/ProyectoIntegrador/Hadoop/temperaturas.txt
+
+#############################################################################
+
+# Limpiar archivo DATABASE
+sed -e 's/[^a-zA-Z*0-9]/ /g;s/  */ /g' empleados.data > database.txt
+
+# Subir archivo
+hdfs dfs -put database.txt /Databases/empleados.txt
+
+# Ejecutar wordcount
+hadoop jar functionWordCount wordcount /Databases/empleados.txt /Databases/OUTPUT
+
+# Mostrar directorio del resultado
+hdfs dfs -ls -R /Databases
+
+# Mostrar resultado
+hdfs dfs -cat /Databases/OUTPUT/part-r-00000
+
+# Bajar archivo
+hdfs dfs -get /Databases/OUTPUT/part-r-00000 /u02/ProyectoIntegrador/Hadoop/empleados.txt
+
+#############################################################################
+
+# Limpiar archivo TWITTER
+sed -e 's/[^a-zA-Z*0-9]/ /g;s/  */ /g' twitter.data > previoEgoland.txt
+
+# Comando para convertir texto a minúsculas
+cat previoEgoland.txt | tr [:upper:] [:lower:] > egoland.txt
+
+# Subir archivo
+hdfs dfs -put egoland.txt /Twitter/egoland.txt
+
+# Ejecutar wordcount
+hadoop jar functionWordCount wordcount /Twitter/egoland.txt /Twitter/OUTPUT
+
+# Mostrar directorio del resultado
+hdfs dfs -ls -R /Twitter
+
+# Mostrar resultado
+hdfs dfs -cat /Twitter/OUTPUT/part-r-00000
+
+# Bajar archivo
+hdfs dfs -get /Twitter/OUTPUT/part-r-00000 /u02/ProyectoIntegrador/Hadoop/egoland.txt
+
+#############################################################################
