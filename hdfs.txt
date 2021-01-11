@@ -10,7 +10,7 @@ hdfs dfs -put texto.txt /Text/mortalidad.txt
 hadoop jar functionWordCount wordcount /Text/mortalidad.txt /Text/OUTPUT
 
 # Mostrar directorio del resultado
-hdfs dfs -ls -lR /Text
+hdfs dfs -ls -l /Text
 
 # Mostrar resultado
 hdfs dfs -cat /Text/OUTPUT/part-r-00000

@@ -12,6 +12,7 @@ wordcloud(words = mortalidadWordCloud$V1,
   random.order = FALSE,
   colors = brewer.pal(8, "Dark2"))
 
+print('Grafica 1')
 #########	JSON	#########
 
 temperaturasWordCloud <- read.table(file = 'Hadoop/temperaturas.txt', sep = '\t')
@@ -21,6 +22,7 @@ wordcloud(words = temperaturasWordCloud$V1,
   random.order = FALSE,
   colors = brewer.pal(8, "Dark2"))
 
+print('Grafica 2')
 #########	DATABASE	#########
 
 empleadosWordCloud <- read.table(file = 'Hadoop/empleados.txt', sep = '\t')
@@ -31,6 +33,7 @@ wordcloud(words = empleadosWordCloud$V1,
   random.order = FALSE,
   colors = brewer.pal(8, "Dark2"))
 
+print('Grafica 3')
 #########       TWITTER        #########
 
 egolandWordCloud <- read.table(file = 'Hadoop/egoland.txt', sep = '\t')
@@ -41,3 +44,5 @@ wordcloud(words = egolandWordCloud$V1,
   random.order = FALSE,
   colors = brewer.pal(8, "Dark2"))
 
+print('Grafica 4')
+print('Fin')

@@ -4,7 +4,7 @@ library(ggplot2)
 
 cat('
 ############################################################\n
-####################	LEER TEXTO	####################\n
+####################    LEER TEXTO      ####################\n
 ############################################################\n
 ')
 
@@ -41,7 +41,7 @@ print(mortalidad.df)
 
 # Modelo para regresión lineal
 modelo <- lm(n_death ~ years, data = mortalidad.df)
-print(modelo)
+print(summary(modelo))
 deathp <- predict(modelo)
 
 # Gráfica
@@ -54,28 +54,33 @@ qplot(x = years, y = n_death, data = mortalidad.df,
 
 cat('
 ############################################################\n
-####################	FIN TEXTO	####################\n
+####################    FIN TEXTO       ####################\n
 ############################################################\n
 ')
 
-############################################################
-####################	LEER JSON	####################
-############################################################
-
+# Crear archivo para wordcount
+mortalidad.data <- data.frame(mortalidad[,7:31])
+write.csv(mortalidad[,7:31], file = './R-OUTPUT/mortalidad.data', row.names = FALSE)
 library(httr)
 library(jsonlite)
 library(rjson)
 library(ggplot2)
-library(RCurl)
+
+cat('
+############################################################\n
+####################    LEER JSON      ####################\n
+############################################################\n
+')
 
 url <- "https://api.datos.gob.mx/v1/condiciones-atmosfericas"
+print(url)
 # Obtener datos de la api
 respuesta <- GET(url)
 datosGenerales <- content(respuesta,"text")
 datosJSON <- paste(datosGenerales,collapse = " ")
 
 # Obtención de la lista de observaciones
-datosJSON <- fromJSON(respuesta)
+datosJSON <- fromJSON(datosJSON)
 
 # Variables para graficar
 estados <- 0
@@ -84,29 +89,39 @@ temperaturas <- 0
 # Recolección de datos
 j <- 1
 
-for (i in 1:length(flujoDatos$results)) {
-   estados[j] = flujoDatos$results[[i]]$state
-   temperaturas[j] = flujoDatos$results[[i]]$tempc
+for (i in 1:length(datosJSON$results)) {
+   estados[j] = datosJSON$results[[i]]$state
+   temperaturas[j] = datosJSON$results[[i]]$tempc
    j <- j + 1
 }
 
 # Creación de la tabla
 temperaturas.df <- data.frame(cbind(estados, temperaturas))
+print(temperaturas.df)
 
 # Gráfica
 ggplot(temperaturas.df, aes(x = temperaturas, fill = estados)) +
    geom_bar(position = 'identity', alpha = 0.5) +
    theme_minimal()
 
-############################################################
-####################	FIN JSON	####################
-############################################################
+cat('
+############################################################\n
+####################	FIN TEXTO      ####################\n
+############################################################\n
+')
 
-############################################################
-####################	LEER DATABASE	####################
-############################################################
+# Crear archivo para wordcount
+temperaturas.data <- data.frame(temperaturas.df)
+write.csv(temperaturas.data, file = './R-OUTPUT/temperaturas.data', row.names = FALSE)
 
+print("Archivo creado")
 library(ggplot2)
+
+cat('
+############################################################\n
+####################     DATABASES      ####################\n
+############################################################\n
+')
 
 # Obtener información
 database <- read.table(file="database", sep=",")
@@ -125,19 +140,29 @@ ggplot(database, aes(x = job_title, y = as.Date(hire_date), colour = gender)) +
    geom_jitter(size = 0.2) +
    theme_minimal()
 
-############################################################
-####################	FIN DATABASE	####################
-############################################################
+cat('
+############################################################\n
+####################	 DATABASES      ####################\n
+############################################################\n
+')
 
-############################################################
-####################	LEER TWITTER	####################
-############################################################
+# Crear archivo para wordcount
+empleados.data <- data.frame(database)
+write.csv(empleados.data, file = './R-OUTPUT/empleados.data', row.names = FALSE)
 
+cat('Archivo creado')
 library(twitteR)
 library(NLP)
 library(tm)
+library(SnowballC)
 library(RColorBrewer)
 library(wordcloud)
+
+cat('
+############################################################\n
+####################    LEER TWITTER    ####################\n
+############################################################\n
+')
 
 # Configuración del acceso desde R para Twitter
 api_key <- "LPsLW0ffDNhLcLoZSQYu9BCqm"
@@ -155,6 +180,7 @@ tweets.df <- twListToDF(tweets)
 # Se crea el Vector Curpus para graficar en cloud
 mycorpus <- VCorpus(VectorSource(tweets.df$text))
 
+print('Grafica 1')
 # Graficar
 wordcloud(mycorpus, random.order = FALSE, colors = brewer.pal(8, "Dark2"))
 
@@ -170,17 +196,27 @@ remove_url <- function(x) gsub("http[^[:space:]]*", "", x)
 mycorpus <- tm_map(mycorpus, content_transformer(remove_url))
 
 # Elimina puntuaciones standard
-mycorpus <- tm_map(mycorpus, removePunctuations)
-mycorpus <- tm_map(mycorpus, content_transformer(to_lower)
+mycorpus <- tm_map(mycorpus, removePunctuation)
+mycorpus <- tm_map(mycorpus, content_transformer(tolower))
 mycorpus <- tm_map(mycorpus, stripWhitespace)
 mycorpus <- tm_map(mycorpus, stemDocument)
 
-myStopWords <- c("now", "this", "new", "news", "egoland", "luzugam", "youtub", "pero", "está", "habiai", "que", "est", "esta")
+myStopWords <- c("now", "this", "new", "news", "infoegoland", "egoland", "luzugam", "youtub", "pero", "está", "habiai", "que", "est", "esta", "mymalkpon", "nos", "del", "fue", "van", "cada")
 mycorpus <- tm_map(mycorpus, removeWords, myStopWords)
 
+print('Grafica 2')
 # Graficar
-wordcloud(mycorpus, random.order = FALSE, colors = brewer.pal(8, "Dark2"))
+wordcloud(mycorpus, random.order = FALSE, min.freq = 3, colors = brewer.pal(8, "Dark2"))
 
-############################################################
-####################	FIN TWITTER	####################
-############################################################
+cat('
+############################################################\n
+####################	FIN TWITTER     ####################\n
+############################################################\n
+')
+
+# Crear archivo para wordcount
+twitter.data <- data.frame(tweets.df$text)
+write.csv(twitter.data, file = './R-OUTPUT/twitter.data', row.names = FALSE)
+
+print("Archivo creado")
+
